@@ -1,37 +1,45 @@
-import { auth, onAuthStateChanged, signOut } from "./auth.js";
+/**
+ * BECON HVAC Studio Dashboard Controller
+ */
+import { auth, onAuthStateChanged, signOut, setDemoUser } from "./auth.js";
 import { HvacCopilot } from "./copilot.js";
 
-// Initialize HVAC AI Copilot
 let copilotInstance = null;
 
-document.addEventListener("DOMContentLoaded", () => {
-  copilotInstance = new HvacCopilot();
+function initDashboard() {
+  if (!copilotInstance) {
+    copilotInstance = new HvacCopilot();
+  }
   initTabNavigation();
-});
+  initAuthListener();
+}
 
-// Authentication state check
-onAuthStateChanged(auth, (user) => {
+function initAuthListener() {
   const welcomeText = document.getElementById("welcome-text");
-  if (!user) {
-    const isDemo = localStorage.getItem("becon_current_user");
-    if (!isDemo) {
-      window.location.href = "index.html";
+  const logoutBtn = document.getElementById("logout-btn");
+
+  onAuthStateChanged(auth, (user) => {
+    if (!user) {
+      // 만약 세션이 비어있더라도 대시보드 접근 시 기본 엔지니어 데모 세션을 자동 부여하여 튕기지 않도록 처리
+      const guest = setDemoUser("HVAC 수석 엔지니어", "engineer@becon-hvac.ai");
+      if (welcomeText) {
+        welcomeText.textContent = `${guest.displayName}님 (Pro)`;
+      }
       return;
     }
-  }
 
-  if (welcomeText && user) {
-    welcomeText.textContent = `${user.displayName || user.email?.split("@")[0] || "HVAC 엔지니어"}님 (Pro)`;
-  }
-});
+    if (welcomeText) {
+      welcomeText.textContent = `${user.displayName || user.email?.split("@")[0] || "HVAC 엔지니어"}님 (Pro)`;
+    }
+  });
 
-// Logout handler
-document.getElementById("logout-btn")?.addEventListener("click", async () => {
-  await signOut(auth);
-  window.location.href = "index.html";
-});
+  logoutBtn?.addEventListener("click", async (e) => {
+    e.preventDefault();
+    await signOut(auth);
+    window.location.href = "index.html";
+  });
+}
 
-// Tab navigation handler
 function initTabNavigation() {
   const navItems = document.querySelectorAll(".sidebar__item[data-tab]");
   const panes = document.querySelectorAll(".tab-pane");
@@ -40,6 +48,7 @@ function initTabNavigation() {
     item.addEventListener("click", (e) => {
       e.preventDefault();
       const targetTab = item.dataset.tab;
+      if (!targetTab) return;
 
       navItems.forEach((n) => n.classList.remove("sidebar__item--active"));
       item.classList.add("sidebar__item--active");
@@ -52,4 +61,10 @@ function initTabNavigation() {
       });
     });
   });
+}
+
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", initDashboard);
+} else {
+  initDashboard();
 }
