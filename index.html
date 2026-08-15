@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>BECON cloud 로그인 UI 목업</title>
+<title>Test Site 로그인</title>
 <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
@@ -66,7 +66,6 @@
               <span class="radio__dot"></span>
               <span class="radio__label">계정 저장하기</span>
             </label>
-            <p class="save-account__desc">LG Account로 BECON cloud에서 로그인 가능합니다.</p>
           </div>
 
           <button type="button" class="btn btn--outline" id="google-login">
@@ -89,14 +88,11 @@
 
           <p class="helper-text">
             계정이 없으신 분은 회원가입을 해주세요.
-            <a href="#" class="link" data-mock="회원가입">회원가입</a>
+            <a href="signup.html" class="link">회원가입</a>
           </p>
           <p class="helper-text">
             계정/비밀번호가 생각나지 않으세요?
-            <a href="#" class="link" data-mock="계정/비밀번호 찾기">계정/ 비밀번호 찾기</a>
-          </p>
-          <p class="helper-text">
-            <a href="#" class="link" data-mock="로그인 가이드(다운로드)">로그인 가이드(다운로드)</a>
+            <a href="find-account.html" class="link">계정/ 비밀번호 찾기</a>
           </p>
         </form>
       </main>
@@ -105,6 +101,7 @@
 
   <div class="toast" id="toast"></div>
 
+  <script src="js/auth.js"></script>
   <script src="js/main.js"></script>
 </body>
 </html>

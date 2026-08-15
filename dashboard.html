@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Test Site</title>
+<link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <button class="sidebar__menu-btn" type="button" aria-label="메뉴 열기">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+          <path d="M3 6h18M3 12h18M3 18h18" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </button>
+      <nav class="sidebar__nav">
+        <a href="#" class="sidebar__item sidebar__item--active">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <circle cx="12" cy="8" r="4" stroke="#fff" stroke-width="1.6"/>
+            <path d="M4 20c0-3.9 3.6-7 8-7s8 3.1 8 7" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/>
+          </svg>
+          <span>계정</span>
+        </a>
+      </nav>
+    </aside>
+
+    <div class="main">
+      <header class="header">
+        <div class="header__logo">
+          <span class="logo-becon">test site</span>
+        </div>
+        <div class="header__user">
+          <span id="welcome-text"></span>
+          <button class="btn-logout" id="logout-btn" type="button">로그아웃</button>
+        </div>
+      </header>
+
+      <div class="sub-banner"></div>
+
+      <main class="content">
+        <div class="dashboard-card">
+          <h1>환영합니다</h1>
+          <p>로그인한 사용자만 볼 수 있는 페이지입니다.</p>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script src="js/auth.js"></script>
+  <script src="js/dashboard.js"></script>
+</body>
+</html>

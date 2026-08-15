@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Test Site 계정/비밀번호 찾기</title>
+<link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <div class="auth-page">
+    <header class="header">
+      <div class="header__logo">
+        <span class="logo-becon">test site</span>
+      </div>
+    </header>
+
+    <main class="auth-content">
+      <div class="auth-form">
+        <h1 class="auth-title">계정/비밀번호 찾기</h1>
+
+        <div class="tabs">
+          <button type="button" class="tab tab--active" data-tab="find-id">계정 찾기</button>
+          <button type="button" class="tab" data-tab="find-password">비밀번호 찾기</button>
+        </div>
+
+        <form class="tab-panel" id="find-id-panel" novalidate>
+          <div class="field">
+            <label for="find-id-name">이름</label>
+            <input type="text" id="find-id-name" placeholder="가입 시 등록한 이름" autocomplete="off" />
+          </div>
+          <button type="submit" class="btn btn--primary">계정 찾기</button>
+          <p class="result-text" id="find-id-result"></p>
+        </form>
+
+        <form class="tab-panel tab-panel--hidden" id="find-password-panel" novalidate>
+          <div class="field">
+            <label for="find-pw-account">계정</label>
+            <input type="text" id="find-pw-account" placeholder="Account" autocomplete="off" />
+          </div>
+          <div class="field">
+            <label for="find-pw-name">이름</label>
+            <input type="text" id="find-pw-name" placeholder="가입 시 등록한 이름" autocomplete="off" />
+          </div>
+
+          <div class="field" id="new-password-field" hidden>
+            <label for="new-password">새 비밀번호</label>
+            <input type="password" id="new-password" placeholder="New Password" autocomplete="off" />
+          </div>
+
+          <button type="submit" class="btn btn--primary" id="find-pw-submit">본인 확인</button>
+        </form>
+
+        <p class="helper-text">
+          <a href="index.html" class="link">로그인 화면으로 돌아가기</a>
+        </p>
+      </div>
+    </main>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script src="js/auth.js"></script>
+  <script src="js/find-account.js"></script>
+</body>
+</html>

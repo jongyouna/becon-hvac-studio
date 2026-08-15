@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Test Site 회원가입</title>
+<link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <div class="auth-page">
+    <header class="header">
+      <div class="header__logo">
+        <span class="logo-becon">test site</span>
+      </div>
+    </header>
+
+    <main class="auth-content">
+      <form class="auth-form" id="signup-form" novalidate>
+        <h1 class="auth-title">회원가입</h1>
+
+        <div class="field">
+          <label for="name">이름</label>
+          <input type="text" id="name" name="name" placeholder="이름" autocomplete="off" />
+        </div>
+
+        <div class="field">
+          <label for="account">계정</label>
+          <input type="text" id="account" name="account" placeholder="사용할 아이디" autocomplete="off" />
+        </div>
+
+        <div class="field">
+          <label for="password">비밀번호</label>
+          <input type="password" id="password" name="password" placeholder="Password" autocomplete="off" />
+        </div>
+
+        <div class="field">
+          <label for="password-confirm">비밀번호 확인</label>
+          <input type="password" id="password-confirm" name="password-confirm" placeholder="Password 확인" autocomplete="off" />
+        </div>
+
+        <button type="submit" class="btn btn--primary">회원가입</button>
+
+        <p class="helper-text">
+          이미 계정이 있으신가요?
+          <a href="index.html" class="link">로그인</a>
+        </p>
+      </form>
+    </main>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script src="js/auth.js"></script>
+  <script src="js/signup.js"></script>
+</body>
+</html>
