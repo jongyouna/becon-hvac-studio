@@ -306,40 +306,6 @@ body {
   text-align: center;
 }
 
-.tabs {
-  display: flex;
-  margin-bottom: 28px;
-  border-bottom: 1px solid var(--border-gray);
-}
-
-.tab {
-  flex: 1;
-  background: none;
-  border: none;
-  padding: 12px 0;
-  font-size: 15px;
-  color: var(--text-muted);
-  cursor: pointer;
-  border-bottom: 2px solid transparent;
-}
-
-.tab--active {
-  color: var(--text-main);
-  font-weight: 600;
-  border-bottom-color: var(--text-main);
-}
-
-.tab-panel--hidden {
-  display: none;
-}
-
-.result-text {
-  margin-top: 14px;
-  font-size: 14px;
-  text-align: center;
-  color: var(--text-main);
-}
-
 /* Dashboard (protected content) */
 .header__user {
   display: flex;

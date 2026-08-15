@@ -49,8 +49,8 @@
       <main class="content">
         <form class="login-form" id="login-form" novalidate>
           <div class="field">
-            <label for="account">계정</label>
-            <input type="text" id="account" name="account" placeholder="Account" autocomplete="off" />
+            <label for="account">이메일</label>
+            <input type="email" id="account" name="account" placeholder="Email" autocomplete="off" />
           </div>
 
           <div class="field">
@@ -91,8 +91,8 @@
             <a href="signup.html" class="link">회원가입</a>
           </p>
           <p class="helper-text">
-            계정/비밀번호가 생각나지 않으세요?
-            <a href="find-account.html" class="link">계정/ 비밀번호 찾기</a>
+            비밀번호가 생각나지 않으세요?
+            <a href="find-account.html" class="link">비밀번호 찾기</a>
           </p>
         </form>
       </main>
@@ -101,7 +101,6 @@
 
   <div class="toast" id="toast"></div>
 
-  <script src="js/auth.js"></script>
-  <script src="js/main.js"></script>
+  <script type="module" src="js/main.js"></script>
 </body>
 </html>

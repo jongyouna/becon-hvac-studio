@@ -1,12 +1,18 @@
-requireAuth("index.html");
+import { auth, onAuthStateChanged, signOut } from "./auth.js";
 
-const session = getSession();
-const welcomeText = document.getElementById("welcome-text");
-if (session && welcomeText) {
-  welcomeText.textContent = `${session.account}님 환영합니다`;
-}
+onAuthStateChanged(auth, (user) => {
+  if (!user) {
+    window.location.href = "index.html";
+    return;
+  }
 
-document.getElementById("logout-btn").addEventListener("click", () => {
-  clearSession();
+  const welcomeText = document.getElementById("welcome-text");
+  if (welcomeText) {
+    welcomeText.textContent = `${user.displayName || user.email}님 환영합니다`;
+  }
+});
+
+document.getElementById("logout-btn").addEventListener("click", async () => {
+  await signOut(auth);
   window.location.href = "index.html";
 });

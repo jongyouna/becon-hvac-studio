@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Test Site 계정/비밀번호 찾기</title>
+<title>Test Site 비밀번호 찾기</title>
 <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
@@ -16,38 +16,17 @@
 
     <main class="auth-content">
       <div class="auth-form">
-        <h1 class="auth-title">계정/비밀번호 찾기</h1>
+        <h1 class="auth-title">비밀번호 찾기</h1>
+        <p class="helper-text" style="margin-bottom: 24px;">
+          계정(이메일)이 기억나지 않으면 가입 시 사용한 이메일로 로그인해주세요.
+        </p>
 
-        <div class="tabs">
-          <button type="button" class="tab tab--active" data-tab="find-id">계정 찾기</button>
-          <button type="button" class="tab" data-tab="find-password">비밀번호 찾기</button>
-        </div>
-
-        <form class="tab-panel" id="find-id-panel" novalidate>
+        <form id="reset-password-form" novalidate>
           <div class="field">
-            <label for="find-id-name">이름</label>
-            <input type="text" id="find-id-name" placeholder="가입 시 등록한 이름" autocomplete="off" />
+            <label for="reset-email">이메일</label>
+            <input type="email" id="reset-email" placeholder="가입한 이메일" autocomplete="off" />
           </div>
-          <button type="submit" class="btn btn--primary">계정 찾기</button>
-          <p class="result-text" id="find-id-result"></p>
-        </form>
-
-        <form class="tab-panel tab-panel--hidden" id="find-password-panel" novalidate>
-          <div class="field">
-            <label for="find-pw-account">계정</label>
-            <input type="text" id="find-pw-account" placeholder="Account" autocomplete="off" />
-          </div>
-          <div class="field">
-            <label for="find-pw-name">이름</label>
-            <input type="text" id="find-pw-name" placeholder="가입 시 등록한 이름" autocomplete="off" />
-          </div>
-
-          <div class="field" id="new-password-field" hidden>
-            <label for="new-password">새 비밀번호</label>
-            <input type="password" id="new-password" placeholder="New Password" autocomplete="off" />
-          </div>
-
-          <button type="submit" class="btn btn--primary" id="find-pw-submit">본인 확인</button>
+          <button type="submit" class="btn btn--primary">비밀번호 재설정 메일 보내기</button>
         </form>
 
         <p class="helper-text">
@@ -59,7 +38,6 @@
 
   <div class="toast" id="toast"></div>
 
-  <script src="js/auth.js"></script>
-  <script src="js/find-account.js"></script>
+  <script type="module" src="js/find-account.js"></script>
 </body>
 </html>
