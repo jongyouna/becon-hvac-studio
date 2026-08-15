@@ -1,0 +1,23 @@
+{
+  "name": "becon-cloud-pro",
+  "version": "1.0.0",
+  "description": "BECON Cloud Pro - AI Scalp & Hair Diagnosis Platform with AI Copilot",
+  "main": "index.html",
+  "scripts": {
+    "dev": "serve . -l 3000",
+    "start": "serve . -l 3000",
+    "serve": "serve ."
+  },
+  "keywords": [
+    "becon",
+    "ai-copilot",
+    "scalp-diagnosis",
+    "hair-care",
+    "firebase"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "serve": "^14.2.4"
+  }
+}

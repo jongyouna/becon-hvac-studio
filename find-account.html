@@ -3,36 +3,38 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Test Site 비밀번호 찾기</title>
+<title>BECON HVAC AI Studio - 비밀번호 재설정</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Pretendard:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
   <div class="auth-page">
     <header class="header">
       <div class="header__logo">
-        <span class="logo-becon">test site</span>
+        <span class="logo-becon">BECON</span>
+        <span class="logo-cloud">HVAC AI Studio</span>
       </div>
     </header>
 
     <main class="auth-content">
-      <div class="auth-form">
+      <form class="auth-form" id="find-form" novalidate>
         <h1 class="auth-title">비밀번호 찾기</h1>
-        <p class="helper-text" style="margin-bottom: 24px;">
-          계정(이메일)이 기억나지 않으면 가입 시 사용한 이메일로 로그인해주세요.
-        </p>
+        <p class="auth-subtitle">가입 시 등록한 엔지니어 이메일 주소를 입력하시면 비밀번호 재설정 링크를 보내드립니다.</p>
 
-        <form id="reset-password-form" novalidate>
-          <div class="field">
-            <label for="reset-email">이메일</label>
-            <input type="email" id="reset-email" placeholder="가입한 이메일" autocomplete="off" />
-          </div>
-          <button type="submit" class="btn btn--primary">비밀번호 재설정 메일 보내기</button>
-        </form>
+        <div class="field">
+          <label for="account">가입 이메일</label>
+          <input type="email" id="account" name="account" placeholder="engineer@building.com" autocomplete="off" />
+        </div>
+
+        <button type="submit" class="btn btn--primary">재설정 이메일 전송</button>
 
         <p class="helper-text">
-          <a href="index.html" class="link">로그인 화면으로 돌아가기</a>
+          기억나셨나요?
+          <a href="index.html" class="link">로그인으로 돌아가기</a>
         </p>
-      </div>
+      </form>
     </main>
   </div>
 

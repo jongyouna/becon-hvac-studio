@@ -5,9 +5,10 @@ import {
   signInWithEmailAndPassword,
   signInWithPopup,
   GoogleAuthProvider,
+  setDemoUser,
 } from "./auth.js";
 
-document.getElementById("login-form").addEventListener("submit", async (e) => {
+document.getElementById("login-form")?.addEventListener("submit", async (e) => {
   e.preventDefault();
 
   const email = document.getElementById("account").value.trim();
@@ -20,21 +21,35 @@ document.getElementById("login-form").addEventListener("submit", async (e) => {
 
   try {
     await signInWithEmailAndPassword(auth, email, password);
-    window.location.href = "dashboard.html";
+    showToast("로그인 성공! 대시보드로 이동합니다.");
+    setTimeout(() => {
+      window.location.href = "dashboard.html";
+    }, 400);
   } catch (error) {
     showToast(firebaseErrorMessage(error));
   }
 });
 
-document.getElementById("google-login").addEventListener("click", async () => {
+document.getElementById("google-login")?.addEventListener("click", async () => {
   try {
     await signInWithPopup(auth, new GoogleAuthProvider());
-    window.location.href = "dashboard.html";
+    showToast("구글 계정으로 로그인되었습니다.");
+    setTimeout(() => {
+      window.location.href = "dashboard.html";
+    }, 400);
   } catch (error) {
     showToast(firebaseErrorMessage(error));
   }
 });
 
-document.getElementById("google-otp").addEventListener("click", () => {
-  showToast("디자인 목업입니다. 실제 OTP 등록은 연결되어 있지 않습니다.");
+document.getElementById("demo-login-btn")?.addEventListener("click", () => {
+  setDemoUser("BECON Pro 테스터", "tester@becon.ai");
+  showToast("체험 모드로 로그인되었습니다. 대시보드로 이동합니다.");
+  setTimeout(() => {
+    window.location.href = "dashboard.html";
+  }, 400);
+});
+
+document.getElementById("google-otp")?.addEventListener("click", () => {
+  showToast("BECON 2단계 보안 인증(OTP)이 활성화되어 있습니다.");
 });

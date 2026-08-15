@@ -3,46 +3,50 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Test Site 회원가입</title>
+<title>BECON HVAC AI Studio - 엔지니어 회원가입</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Pretendard:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
   <div class="auth-page">
     <header class="header">
       <div class="header__logo">
-        <span class="logo-becon">test site</span>
+        <span class="logo-becon">BECON</span>
+        <span class="logo-cloud">HVAC AI Studio</span>
       </div>
     </header>
 
     <main class="auth-content">
       <form class="auth-form" id="signup-form" novalidate>
-        <h1 class="auth-title">회원가입</h1>
+        <h1 class="auth-title">엔지니어 계정 등록</h1>
 
         <div class="field">
-          <label for="name">이름</label>
-          <input type="text" id="name" name="name" placeholder="이름" autocomplete="off" />
+          <label for="name">엔지니어 성명</label>
+          <input type="text" id="name" name="name" placeholder="홍길동" autocomplete="off" />
         </div>
 
         <div class="field">
-          <label for="account">이메일</label>
-          <input type="email" id="account" name="account" placeholder="Email" autocomplete="off" />
+          <label for="account">회사/엔지니어 이메일</label>
+          <input type="email" id="account" name="account" placeholder="engineer@building.com" autocomplete="off" />
         </div>
 
         <div class="field">
           <label for="password">비밀번호</label>
-          <input type="password" id="password" name="password" placeholder="Password" autocomplete="off" />
+          <input type="password" id="password" name="password" placeholder="6자리 이상 비밀번호" autocomplete="off" />
         </div>
 
         <div class="field">
           <label for="password-confirm">비밀번호 확인</label>
-          <input type="password" id="password-confirm" name="password-confirm" placeholder="Password 확인" autocomplete="off" />
+          <input type="password" id="password-confirm" name="password-confirm" placeholder="비밀번호 재입력" autocomplete="off" />
         </div>
 
-        <button type="submit" class="btn btn--primary">회원가입</button>
+        <button type="submit" class="btn btn--primary">계정 생성 완료</button>
 
         <p class="helper-text">
           이미 계정이 있으신가요?
-          <a href="index.html" class="link">로그인</a>
+          <a href="index.html" class="link">로그인으로 이동</a>
         </p>
       </form>
     </main>

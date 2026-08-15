@@ -1,72 +1,66 @@
-# Test Site 로그인 UI 목업
+# BECON Cloud Pro — HVAC AI Logic Studio (자연어 기반 공조 제어 로직 생성 Agent)
 
-Firebase Authentication을 사용한 로그인/회원가입/비밀번호 찾기 흐름을 갖춘 정적
-프론트엔드 사이트입니다.
+BECON HVAC AI Studio는 빌딩 자동제어(BAS), 공조기(AHU), 칠러(Chiller), VAV 제어 시퀀스를 **자연어로 입력받아 검증된 Sequence of Operation(SOO), BACnet/Modbus I/O 포인트 매핑표, IEC 61131-3 제어 코드 및 안전 인터록 규칙**을 자동으로 생성하고 시뮬레이션하는 전문 AI Agent 플랫폼입니다.
 
-## 안내
-- 로그인/회원가입/비밀번호 재설정은 Firebase Authentication(이메일/비밀번호,
-  구글 로그인)으로 동작합니다.
-- 서버 코드는 없으며, 정적 파일 + Firebase 클라이언트 SDK로만 구성되어 있습니다.
-- 디자인 참고 및 프론트엔드 학습용으로 제작된 개인 프로젝트입니다.
+---
 
-## Firebase 프로젝트 준비
-1. [Firebase 콘솔](https://console.firebase.google.com)에서 프로젝트를 생성합니다.
-2. Authentication > Sign-in method에서 **이메일/비밀번호**, (선택) **Google** 제공업체를
-   사용 설정합니다.
-3. Authentication > Settings > 승인된 도메인에 배포 도메인
-   (`<username>.github.io`)을 추가합니다.
-4. 프로젝트 설정 > 일반 탭 > 내 앱에서 웹 앱을 추가하고 SDK 설정 값(apiKey,
-   authDomain, projectId, storageBucket, messagingSenderId, appId)을 확인합니다.
+## 🌟 주요 기능
 
-## GitHub Actions 배포 설정
-이 저장소는 Firebase 설정값을 소스코드에 커밋하지 않고, GitHub Actions가 배포 시점에
-저장소 Secrets로부터 `js/firebase-config.js`를 생성합니다.
+1. **BECON HVAC AI Logic Agent (자연어 제어 로직 생성)**:
+   - **온도 제어**: 외기보상 연동 급기온도 냉/온수 밸브 PID 루프 자동 생성
+   - **수요제어환기 (DCV)**: 실내 CO2 농도 비례 가변 외기 댐퍼 및 팬 인버터 제어 시퀀스
+   - **안전 인터록**: 영하 한파 동파 방지(Freeze Stat), 팬-댐퍼 연동, 연기 감지 긴급 차단
+   - **에너지 최적화 & 피크 컷**: 14~16시 전력 피크 억제 수요반응(Demand Response) 부하 감축 시퀀스
+   - **BACnet DDC 코드 출력**: Structured Text (IEC 61131-3) 및 Python BACnet 스크립트 생성
 
-1. 저장소 **Settings > Secrets and variables > Actions**에서 아래 6개 Repository
-   secret을 등록합니다.
-   - `FIREBASE_API_KEY`
-   - `FIREBASE_AUTH_DOMAIN`
-   - `FIREBASE_PROJECT_ID`
-   - `FIREBASE_STORAGE_BUCKET`
-   - `FIREBASE_MESSAGING_SENDER_ID`
-   - `FIREBASE_APP_ID`
-2. 저장소 **Settings > Pages > Build and deployment > Source**를 **GitHub Actions**로
-   변경합니다(기존 "Deploy from a branch" 방식에서 전환).
-3. `main` 브랜치에 푸시하면 `.github/workflows/deploy-pages.yml` 워크플로가 실행되어
-   `js/firebase-config.js`를 생성하고 GitHub Pages로 배포합니다.
+2. **실시간 AHU 텔레메트리 HUD & 로직 시뮬레이션**:
+   - 외기(OA), 급기(SA), 환기(RA), CO2, 밸브 개도율, 팬 주파수 실시간 모니터링
+   - 생성된 제어 로직을 가상 AHU 컨트롤러에 주입하여 수렴 상태 즉시 시뮬레이션
+   - 원클릭 DDC 제어기 배포 (BACnet Push 시뮬레이션) 및 SOO 사양서 PDF 출력
 
-> Firebase 웹 SDK 설정값(apiKey 등)은 브라우저에 그대로 노출되는 공개 설정값이며
-> 비밀 키가 아닙니다. Secrets로 관리하는 것은 소스코드에 하드코딩하지 않기 위함이며,
-> 실제 접근 제어는 Firebase 콘솔의 승인된 도메인 및 Security Rules가 담당합니다.
+3. **인증 및 배포 환경**:
+   - Firebase Authentication (이메일/비밀번호, Google 로그인)
+   - 빠른 검증을 위한 **'체험 모드로 바로 시작하기 (HVAC Demo)'** 원클릭 로그인 지원
+   - GitHub Actions (`.github/workflows/deploy-pages.yml`) 자동 배포 파이프라인
 
-## 로컬 개발
-```bash
-cp js/firebase-config.example.js js/firebase-config.js
-# js/firebase-config.js를 실제 Firebase 프로젝트 값으로 채운 뒤
-npx serve .
+---
+
+## 🚀 로컬 실행 방법
+
+1. 저장소 디렉터리로 이동:
+   ```bash
+   cd becon-cloud-pro
+   ```
+
+2. 로컬 서버 실행:
+   ```bash
+   npx serve . -l 3000
+   ```
+
+3. 브라우저에서 `http://localhost:3000` 접속 후 **[체험 모드로 바로 시작하기]** 클릭
+
+---
+
+## 📁 프로젝트 구조
+
 ```
-`js/firebase-config.js`는 `.gitignore`에 포함되어 있어 커밋되지 않습니다.
-
-ES 모듈(`type="module"`)을 사용하므로 `index.html`을 파일로 직접 열면(`file://`) 동작하지
-않습니다. 반드시 로컬 정적 서버(`npx serve .` 등)로 실행하세요.
-
-## 사용 흐름
-1. `signup.html`에서 이메일/비밀번호로 회원가입합니다(Firebase Authentication에 계정
-   생성).
-2. `index.html`에서 로그인하면 `dashboard.html`(로그인한 사용자만 볼 수 있는 페이지)로
-   이동합니다.
-3. `find-account.html`에서 이메일을 입력하면 Firebase가 비밀번호 재설정 메일을
-   발송합니다.
-4. `dashboard.html`은 로그인 세션이 없으면 자동으로 `index.html`로 리다이렉트됩니다.
-
-## 구성
-- `index.html` — 로그인 화면
-- `signup.html` — 회원가입 화면
-- `find-account.html` — 비밀번호 찾기 화면
-- `dashboard.html` — 로그인한 사용자만 접근 가능한 콘텐츠 화면
-- `css/style.css` — 레이아웃/스타일
-- `js/auth.js` — Firebase Authentication 초기화 및 공통 헬퍼
-- `js/firebase-config.example.js` — Firebase 설정값 템플릿(실값은 커밋하지 않음)
-- `js/main.js`, `js/signup.js`, `js/find-account.js`, `js/dashboard.js` — 각 화면 스크립트
-- `.github/workflows/deploy-pages.yml` — Secrets로부터 설정을 생성해 GitHub Pages에
-  배포하는 워크플로
+becon-cloud-pro/
+├── index.html                 # HVAC AI Studio 로그인 & 데모 접속
+├── signup.html                # 엔지니어 회원가입
+├── find-account.html          # 비밀번호 재설정
+├── dashboard.html             # HVAC AI Logic Generator & AHU HUD 워크스페이스
+├── css/
+│   └── style.css              # HVAC 엔지니어링 테마 & 반응형 스타일시트
+├── js/
+│   ├── auth.js                # Firebase Auth & 데모 세션 관리
+│   ├── copilot.js             # HVAC 자연어 로직 생성 AI Agent 엔진
+│   ├── dashboard.js           # 대시보드 탭 & 텔레메트리 컨트롤러
+│   ├── main.js                # 로그인 스크립트
+│   ├── signup.js              # 회원가입 스크립트
+│   ├── find-account.js        # 비밀번호 찾기 스크립트
+│   ├── firebase-config.js     # 로컬 설정 파일
+│   └── firebase-config.example.js
+├── package.json               # 로컬 실행 스크립트
+└── .github/workflows/
+    └── deploy-pages.yml       # GitHub Actions 자동 배포 파이프라인
+```
