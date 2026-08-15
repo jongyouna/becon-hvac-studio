@@ -1,0 +1,299 @@
+:root {
+  --sidebar-bg: #1b1b1b;
+  --accent: #c9006b;
+  --border-gray: #e2e2e2;
+  --sub-banner: #f2f2f2;
+  --text-main: #1a1a1a;
+  --text-muted: #8a8a8a;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "Pretendard", "Apple SD Gothic Neo", "Malgun Gothic", Arial, sans-serif;
+  color: var(--text-main);
+  background: #fff;
+}
+
+.app {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* Sidebar */
+.sidebar {
+  width: 72px;
+  flex: 0 0 72px;
+  background: var(--sidebar-bg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.sidebar__menu-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 22px 0 30px;
+}
+
+.sidebar__nav {
+  width: 100%;
+}
+
+.sidebar__item {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 16px 0;
+  text-decoration: none;
+  color: #fff;
+  font-size: 13px;
+}
+
+.sidebar__item--active::before {
+  content: "";
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: var(--accent);
+}
+
+/* Main column */
+.main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.header {
+  height: 68px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 32px;
+  border-bottom: 1px solid var(--border-gray);
+}
+
+.header__logo {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  font-size: 20px;
+}
+
+.logo-lg {
+  font-weight: 700;
+}
+
+.logo-becon {
+  font-weight: 800;
+  font-style: italic;
+  letter-spacing: 0.5px;
+}
+
+.logo-cloud {
+  font-weight: 400;
+}
+
+.header__lang {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+}
+
+.header__lang > span:first-child {
+  font-weight: 600;
+}
+
+.lang-select {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  color: var(--text-main);
+}
+
+.sub-banner {
+  height: 24px;
+  background: var(--sub-banner);
+}
+
+.content {
+  flex: 1;
+  display: flex;
+  padding: 90px 32px;
+}
+
+.login-form {
+  width: 100%;
+  max-width: 480px;
+  margin: 0 auto 0 32%;
+}
+
+.field {
+  margin-bottom: 30px;
+}
+
+.field label {
+  display: block;
+  font-size: 15px;
+  font-weight: 600;
+  margin-bottom: 14px;
+}
+
+.field input {
+  width: 100%;
+  border: none;
+  border-bottom: 1px solid #cfcfcf;
+  padding: 8px 2px;
+  font-size: 15px;
+  outline: none;
+  background: transparent;
+}
+
+.field input::placeholder {
+  color: #bdbdbd;
+}
+
+.field input:focus {
+  border-bottom-color: var(--text-main);
+}
+
+.btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  height: 52px;
+  border-radius: 6px;
+  font-size: 15px;
+  cursor: pointer;
+  margin-bottom: 16px;
+}
+
+.btn--primary {
+  background: #fff;
+  color: var(--text-main);
+  border: 1.5px solid var(--text-main);
+  font-weight: 600;
+}
+
+.btn--primary:hover {
+  background: var(--text-main);
+  color: #fff;
+}
+
+.btn--outline {
+  background: #fff;
+  border: 1px solid var(--border-gray);
+  color: var(--text-main);
+}
+
+.btn--outline:hover {
+  border-color: #b8b8b8;
+}
+
+.save-account {
+  margin-bottom: 28px;
+}
+
+.radio {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.radio input {
+  display: none;
+}
+
+.radio__dot {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 1px solid #b8b8b8;
+  flex: 0 0 16px;
+  position: relative;
+}
+
+.radio input:checked + .radio__dot::after {
+  content: "";
+  position: absolute;
+  inset: 3px;
+  border-radius: 50%;
+  background: var(--text-main);
+}
+
+.save-account__desc {
+  margin: 8px 0 0 26px;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.helper-text {
+  text-align: center;
+  font-size: 13px;
+  color: var(--text-muted);
+  margin: 6px 0;
+}
+
+.link {
+  color: var(--text-main);
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: 40px;
+  transform: translate(-50%, 20px);
+  background: rgba(20, 20, 20, 0.92);
+  color: #fff;
+  padding: 12px 20px;
+  border-radius: 6px;
+  font-size: 14px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.toast.show {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+@media (max-width: 900px) {
+  .login-form {
+    margin: 0 auto;
+  }
+}
+
+@media (max-width: 560px) {
+  .sidebar {
+    width: 56px;
+    flex-basis: 56px;
+  }
+  .header {
+    padding: 0 16px;
+  }
+  .content {
+    padding: 48px 20px;
+  }
+}

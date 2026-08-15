@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>BECON cloud 로그인 UI 목업</title>
+<link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <div class="app">
+    <!-- 좌측 사이드바 -->
+    <aside class="sidebar">
+      <button class="sidebar__menu-btn" type="button" aria-label="메뉴 열기">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+          <path d="M3 6h18M3 12h18M3 18h18" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </button>
+      <nav class="sidebar__nav">
+        <a href="#" class="sidebar__item sidebar__item--active">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <circle cx="12" cy="8" r="4" stroke="#fff" stroke-width="1.6"/>
+            <path d="M4 20c0-3.9 3.6-7 8-7s8 3.1 8 7" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/>
+          </svg>
+          <span>계정</span>
+        </a>
+      </nav>
+    </aside>
+
+    <div class="main">
+      <!-- 상단 헤더 -->
+      <header class="header">
+        <div class="header__logo">
+          <span class="logo-lg">LG</span>
+          <span class="logo-becon">BECON</span>
+          <span class="logo-cloud">cloud</span>
+        </div>
+        <div class="header__lang">
+          <span>Language</span>
+          <button class="lang-select" type="button">
+            한국어
+            <svg width="10" height="6" viewBox="0 0 10 6" fill="none">
+              <path d="M1 1l4 4 4-4" stroke="#333" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+        </div>
+      </header>
+
+      <div class="sub-banner"></div>
+
+      <!-- 로그인 콘텐츠 -->
+      <main class="content">
+        <form class="login-form" id="login-form" novalidate>
+          <div class="field">
+            <label for="account">계정</label>
+            <input type="text" id="account" name="account" placeholder="Account" autocomplete="off" />
+          </div>
+
+          <div class="field">
+            <label for="password">비밀번호</label>
+            <input type="password" id="password" name="password" placeholder="Password" autocomplete="off" />
+          </div>
+
+          <button type="submit" class="btn btn--primary">로그인</button>
+
+          <div class="save-account">
+            <label class="radio">
+              <input type="radio" name="save-account" />
+              <span class="radio__dot"></span>
+              <span class="radio__label">계정 저장하기</span>
+            </label>
+            <p class="save-account__desc">LG Account로 BECON cloud에서 로그인 가능합니다.</p>
+          </div>
+
+          <button type="button" class="btn btn--outline" id="google-login">
+            <svg width="20" height="20" viewBox="0 0 48 48">
+              <path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3c-1.6 4.7-6.1 8-11.3 8-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.9 1.2 8 3.1l5.7-5.7C34.6 6 29.6 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.7-.4-3.5z"/>
+              <path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.6 15.9 18.9 13 24 13c3.1 0 5.9 1.2 8 3.1l5.7-5.7C34.6 6 29.6 4 24 4 16.3 4 9.6 8.3 6.3 14.7z"/>
+              <path fill="#4CAF50" d="M24 44c5.5 0 10.4-1.9 14.3-5.1l-6.6-5.4C29.6 35.4 27 36 24 36c-5.2 0-9.6-3.3-11.3-7.9l-6.5 5C9.5 39.6 16.2 44 24 44z"/>
+              <path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.3-2.2 4.2-4.1 5.6l6.6 5.4C41.5 35.9 44 30.4 44 24c0-1.3-.1-2.7-.4-3.5z"/>
+            </svg>
+            <span>구글 로그인</span>
+          </button>
+
+          <button type="button" class="btn btn--outline" id="google-otp">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+              <rect x="5" y="10" width="14" height="10" rx="2" stroke="#222" stroke-width="1.6"/>
+              <path d="M8 10V7a4 4 0 018 0v3" stroke="#222" stroke-width="1.6" stroke-linecap="round"/>
+            </svg>
+            <span>구글 OTP 등록</span>
+          </button>
+
+          <p class="helper-text">
+            계정이 없으신 분은 회원가입을 해주세요.
+            <a href="#" class="link" data-mock="회원가입">회원가입</a>
+          </p>
+          <p class="helper-text">
+            계정/비밀번호가 생각나지 않으세요?
+            <a href="#" class="link" data-mock="계정/비밀번호 찾기">계정/ 비밀번호 찾기</a>
+          </p>
+          <p class="helper-text">
+            <a href="#" class="link" data-mock="로그인 가이드(다운로드)">로그인 가이드(다운로드)</a>
+          </p>
+        </form>
+      </main>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script src="js/main.js"></script>
+</body>
+</html>
