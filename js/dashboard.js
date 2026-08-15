@@ -3,6 +3,7 @@
  */
 import { auth, onAuthStateChanged, signOut, setDemoUser } from "./auth.js";
 import { HvacCopilot } from "./copilot.js";
+import { getLanguage, t } from "./i18n.js";
 
 let copilotInstance = null;
 
@@ -18,19 +19,32 @@ function initAuthListener() {
   const welcomeText = document.getElementById("welcome-text");
   const logoutBtn = document.getElementById("logout-btn");
 
+  const updateWelcome = (user) => {
+    if (!welcomeText) return;
+    const isKo = getLanguage() === "ko";
+    const role = isKo ? "님 (Pro)" : " (Pro)";
+    const defaultName = isKo ? "HVAC 수석 엔지니어" : "Lead HVAC Engineer";
+    const name = user?.displayName || user?.email?.split("@")[0] || defaultName;
+    welcomeText.textContent = `${name}${role}`;
+  };
+
   onAuthStateChanged(auth, (user) => {
     if (!user) {
-      // 만약 세션이 비어있더라도 대시보드 접근 시 기본 엔지니어 데모 세션을 자동 부여하여 튕기지 않도록 처리
       const guest = setDemoUser("HVAC 수석 엔지니어", "engineer@becon-hvac.ai");
-      if (welcomeText) {
-        welcomeText.textContent = `${guest.displayName}님 (Pro)`;
-      }
+      updateWelcome(guest);
       return;
     }
+    updateWelcome(user);
+  });
 
-    if (welcomeText) {
-      welcomeText.textContent = `${user.displayName || user.email?.split("@")[0] || "HVAC 엔지니어"}님 (Pro)`;
-    }
+  // 언어 변경 시 사용자 웰컴 명칭도 언어에 맞게 자동 갱신
+  window.addEventListener("languageChanged", () => {
+    const stored = localStorage.getItem("becon_current_user");
+    let user = null;
+    try {
+      user = stored ? JSON.parse(stored) : null;
+    } catch (e) {}
+    updateWelcome(user);
   });
 
   logoutBtn?.addEventListener("click", async (e) => {

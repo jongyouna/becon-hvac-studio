@@ -83,6 +83,7 @@ export const translations = {
     "hud.power_title": "실시간 공조 소비 전력",
     "hud.power_saving": "AI 부하 최적화 가동 중 (-14.8% 절감)",
     "hud.badge_optimal": "AUTO OPTIMAL",
+    "ahu.stat_normal": "정상",
 
     // AHU Plant Tab
     "plant.title": "🏢 Building #4 공조기(AHU-01) 정밀 계통도",
@@ -241,6 +242,7 @@ export const translations = {
     "hud.power_title": "Real-Time Power Consumption",
     "hud.power_saving": "AI Load Optimization Active (-14.8% Saved)",
     "hud.badge_optimal": "AUTO OPTIMAL",
+    "ahu.stat_normal": "Normal",
 
     // AHU Plant Tab
     "plant.title": "🏢 Building #4 AHU-01 Detailed Schematic",

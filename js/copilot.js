@@ -1,6 +1,6 @@
 /**
  * BECON HVAC AI Copilot Engine
- * 자연어 기반 공조(HVAC) 제어 로직 생성 및 시뮬레이션 에이전트 (다국어 i18n 지원)
+ * 자연어 기반 공조(HVAC) 제어 로직 생성 및 시뮬레이션 에이전트 (완벽한 다국어 i18n 지원)
  */
 import { t, getLanguage } from "./i18n.js";
 
@@ -14,6 +14,9 @@ export class HvacCopilot {
     this.simBtn = document.getElementById("trigger-sim-btn");
     this.activeMode = "temp";
     this.isTyping = false;
+
+    // 대화 히스토리 상태 (언어 전환 시 전체 메시지 실시간 재번역 지원)
+    this.messageHistory = [];
 
     // 공조기(AHU) 실시간 센서 및 액추에이터 텔레메트리
     this.telemetry = {
@@ -112,11 +115,14 @@ export class HvacCopilot {
   init() {
     this.bindEvents();
     this.updateHUD();
-    this.renderWelcome();
+    
+    // 초기 웰컴 메시지 등록
+    this.messageHistory = [{ type: "welcome", time: this.getTimeString() }];
+    this.renderAllMessages();
 
-    // 언어 변경 리스너
+    // 언어 변경 리스너 (언어 선택 시 전체 대화창 및 HUD 즉시 재번역)
     window.addEventListener("languageChanged", () => {
-      this.renderWelcome();
+      this.renderAllMessages();
       this.updateHUD();
     });
   }
@@ -183,7 +189,7 @@ export class HvacCopilot {
     
     setTimeout(() => {
       const autoResponse = this.generatePresetAnalysis(preset);
-      this.appendAiMessage(autoResponse);
+      this.appendAiMessage(autoResponse, "preset", preset);
     }, 500);
   }
 
@@ -216,28 +222,7 @@ export class HvacCopilot {
         `;
       }
 
-      const simReport = isKo ? `
-### ✅ DDC 시뮬레이션 완료 보고서 (Simulation Pass)
-
-* **제어 대상**: 공조기 1호기 (\`AHU-01\`)
-* **수렴 결과**:
-  - 급기 온도: \`${this.telemetry.saTemp}℃\` (설정값 \`${this.telemetry.saTempSp}℃\` 도달)
-  - 실내 온도: \`${this.telemetry.raTemp}℃\` (오차 \`±0.1℃\` 이내 안정화)
-  - 실내 CO2: \`${this.telemetry.co2Level} ppm\` (쾌적 기준 만족)
-  - 예상 전력 절감률: **-12.4% (약 4.8 kW 감축)**
-* **안전 인터록 상태**: 동파 방지, 팬-댐퍼 인터록, 과열 보호 모두 정상 작동 확인.
-      ` : `
-### ✅ DDC Simulation Verification Report (Pass)
-
-* **Target Unit**: Air Handling Unit 1 (\`AHU-01\`)
-* **Convergence Results**:
-  - Supply Air Temp: \`${this.telemetry.saTemp}℃\` (Reached Setpoint \`${this.telemetry.saTempSp}℃\`)
-  - Return / Room Temp: \`${this.telemetry.raTemp}℃\` (Stabilized within \`±0.1℃\`)
-  - Indoor CO2 Level: \`${this.telemetry.co2Level} ppm\` (Meets IAQ standards)
-  - Expected Power Reduction: **-12.4% (~4.8 kW reduction)**
-* **Safety Interlocks**: Freeze guard, fan-damper interlock, and thermal limits verified.
-      `;
-      this.appendAiMessage(simReport, true);
+      this.appendAiMessage("", "sim_report", null);
     }, 1200);
   }
 
@@ -287,35 +272,165 @@ export class HvacCopilot {
     if (val) val.textContent = valueText;
   }
 
-  renderWelcome() {
+  /**
+   * 언어 전환 시 전체 대화창 메시지 재렌더링
+   */
+  renderAllMessages() {
     if (!this.chatContainer) return;
-    const isKo = getLanguage() === "ko";
+    this.chatContainer.innerHTML = "";
 
-    this.chatContainer.innerHTML = `
-      <div class="copilot-msg copilot-msg--ai welcome-bubble">
-        <div class="copilot-avatar">
-          <span class="avatar-icon">HVAC</span>
-        </div>
-        <div class="copilot-body">
-          <div class="copilot-sender">${t("copilot.title")} <span class="badge-tag">BACnet / DDC Pro</span></div>
-          <div class="copilot-text">
-            <p>${t("copilot.welcome_title")}</p>
-            <p>${t("copilot.welcome_desc")}</p>
-            
-            <div class="copilot-card">
-              <div class="copilot-card__title">${t("copilot.welcome_card_title")}</div>
-              <ul class="copilot-card__list">
-                <li><em>"${t("copilot.welcome_ex1")}"</em></li>
-                <li><em>"${t("copilot.welcome_ex2")}"</em></li>
-                <li><em>"${t("copilot.welcome_ex3")}"</em></li>
-                <li><em>"${t("copilot.welcome_ex4")}"</em></li>
-              </ul>
-            </div>
+    this.messageHistory.forEach((msg) => {
+      if (msg.type === "welcome") {
+        this.renderWelcomeNode(msg.time);
+      } else if (msg.type === "user") {
+        this.renderUserNode(msg.text, msg.time);
+      } else if (msg.type === "ai") {
+        const text = this.generateLogicResponse(msg.query);
+        this.renderAiNode(text, msg.time);
+      } else if (msg.type === "preset") {
+        const text = this.generatePresetAnalysis(msg.data);
+        this.renderAiNode(text, msg.time);
+      } else if (msg.type === "sim_report") {
+        const isKo = getLanguage() === "ko";
+        const text = isKo ? `
+### ✅ DDC 시뮬레이션 완료 보고서 (Simulation Pass)
+
+* **제어 대상**: 공조기 1호기 (\`AHU-01\`)
+* **수렴 결과**:
+  - 급기 온도: \`${this.telemetry.saTemp}℃\` (설정값 \`${this.telemetry.saTempSp}℃\` 도달)
+  - 실내 온도: \`${this.telemetry.raTemp}℃\` (오차 \`±0.1℃\` 이내 안정화)
+  - 실내 CO2: \`${this.telemetry.co2Level} ppm\` (쾌적 기준 만족)
+  - 예상 전력 절감률: **-12.4% (약 4.8 kW 감축)**
+* **안전 인터록 상태**: 동파 방지, 팬-댐퍼 인터록, 과열 보호 모두 정상 작동 확인.
+        ` : `
+### ✅ DDC Simulation Verification Report (Pass)
+
+* **Target Unit**: Air Handling Unit 1 (\`AHU-01\`)
+* **Convergence Results**:
+  - Supply Air Temp: \`${this.telemetry.saTemp}℃\` (Reached Setpoint \`${this.telemetry.saTempSp}℃\`)
+  - Return / Room Temp: \`${this.telemetry.raTemp}℃\` (Stabilized within \`±0.1℃\`)
+  - Indoor CO2 Level: \`${this.telemetry.co2Level} ppm\` (Meets IAQ standards)
+  - Expected Power Reduction: **-12.4% (~4.8 kW reduction)**
+* **Safety Interlocks**: Freeze guard, fan-damper interlock, and thermal limits verified.
+        `;
+        this.renderAiNode(text, msg.time);
+      } else if (msg.type === "notice") {
+        this.renderNoticeNode(msg.text);
+      }
+    });
+
+    this.scrollToBottom();
+  }
+
+  renderWelcomeNode(time) {
+    const isKo = getLanguage() === "ko";
+    const msgEl = document.createElement("div");
+    msgEl.className = "copilot-msg copilot-msg--ai welcome-bubble";
+    msgEl.innerHTML = `
+      <div class="copilot-avatar">
+        <span class="avatar-icon">HVAC</span>
+      </div>
+      <div class="copilot-body">
+        <div class="copilot-sender">${t("copilot.title")} <span class="badge-tag">BACnet / DDC Pro</span></div>
+        <div class="copilot-text">
+          <p>${t("copilot.welcome_title")}</p>
+          <p>${t("copilot.welcome_desc")}</p>
+          
+          <div class="copilot-card">
+            <div class="copilot-card__title">${t("copilot.welcome_card_title")}</div>
+            <ul class="copilot-card__list">
+              <li><em>"${t("copilot.welcome_ex1")}"</em></li>
+              <li><em>"${t("copilot.welcome_ex2")}"</em></li>
+              <li><em>"${t("copilot.welcome_ex3")}"</em></li>
+              <li><em>"${t("copilot.welcome_ex4")}"</em></li>
+            </ul>
           </div>
-          <div class="copilot-time">${this.getTimeString()}</div>
         </div>
+        <div class="copilot-time">${time || this.getTimeString()}</div>
       </div>
     `;
+    this.chatContainer.appendChild(msgEl);
+  }
+
+  renderUserNode(text, time) {
+    const msgEl = document.createElement("div");
+    msgEl.className = "copilot-msg copilot-msg--user";
+    msgEl.innerHTML = `
+      <div class="copilot-body">
+        <div class="copilot-text"><p>${this.escapeHtml(text)}</p></div>
+        <div class="copilot-time">${time || this.getTimeString()}</div>
+      </div>
+    `;
+    this.chatContainer.appendChild(msgEl);
+  }
+
+  renderNoticeNode(text) {
+    const el = document.createElement("div");
+    el.className = "copilot-system-notice";
+    el.innerHTML = `<span>${text}</span>`;
+    this.chatContainer.appendChild(el);
+  }
+
+  renderAiNode(markdownText, time) {
+    const msgEl = document.createElement("div");
+    msgEl.className = "copilot-msg copilot-msg--ai";
+    
+    const formattedHtml = this.formatMarkdown(markdownText);
+    const copyLabel = t("action.copy", "로직 복사");
+    const deployLabel = t("action.deploy_ddc", "🚀 DDC 배포 (BACnet Push)");
+    const feedbackLabel = t("action.feedback", "👍 검증 완료");
+
+    msgEl.innerHTML = `
+      <div class="copilot-avatar">
+        <span class="avatar-icon">HVAC</span>
+      </div>
+      <div class="copilot-body">
+        <div class="copilot-sender">${t("copilot.title")} <span class="badge-tag">Verified SOO</span></div>
+        <div class="copilot-text">${formattedHtml}</div>
+        <div class="copilot-actions">
+          <button class="copilot-action-btn btn-copy" title="Copy Logic">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><rect x="9" y="9" width="13" height="13" rx="2" stroke="currentColor" stroke-width="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1" stroke="currentColor" stroke-width="2"/></svg>
+            <span>${copyLabel}</span>
+          </button>
+          <button class="copilot-action-btn btn-deploy-ddc" title="Deploy">${deployLabel}</button>
+          <button class="copilot-action-btn btn-feedback" title="Feedback">${feedbackLabel}</button>
+        </div>
+        <div class="copilot-time">${time || this.getTimeString()}</div>
+      </div>
+    `;
+    this.chatContainer.appendChild(msgEl);
+
+    // 복사 이벤트
+    msgEl.querySelector(".btn-copy")?.addEventListener("click", () => {
+      navigator.clipboard.writeText(markdownText.replace(/[#*`_]/g, ""));
+      const copyBtn = msgEl.querySelector(".btn-copy span");
+      if (copyBtn) copyBtn.textContent = getLanguage() === "ko" ? "✓ 복사 완료" : "✓ Copied";
+      setTimeout(() => {
+        if (copyBtn) copyBtn.textContent = copyLabel;
+      }, 1500);
+    });
+
+    // DDC 배포 이벤트
+    msgEl.querySelector(".btn-deploy-ddc")?.addEventListener("click", () => {
+      const isKo = getLanguage() === "ko";
+      const deployBtn = msgEl.querySelector(".btn-deploy-ddc");
+      deployBtn.innerHTML = `<span class="spinner"></span> ${isKo ? 'DDC 전송 중...' : 'Transmitting...'}`;
+      setTimeout(() => {
+        deployBtn.innerHTML = `✅ ${isKo ? 'DDC 주입 성공 (BACnet Ack)' : 'DDC Injected (BACnet Ack)'}`;
+        this.appendSystemNotice(isKo
+          ? "📡 [BACnet/IP] 대상 제어기 `DDC-AHU-01 (192.168.1.100:47808)`에 신규 제어 시퀀스가 주입되었습니다."
+          : "📡 [BACnet/IP] Control sequence successfully pushed to target controller `DDC-AHU-01 (192.168.1.100:47808)`.");
+      }, 900);
+    });
+
+    // 피드백 이벤트
+    msgEl.querySelector(".btn-feedback")?.addEventListener("click", (e) => {
+      e.target.classList.toggle("active");
+      const isKo = getLanguage() === "ko";
+      e.target.textContent = e.target.classList.contains("active") 
+        ? (isKo ? "❤️ 엔지니어 승인됨" : "❤️ Engineer Approved") 
+        : feedbackLabel;
+    });
   }
 
   handleUserSubmit() {
@@ -331,97 +446,32 @@ export class HvacCopilot {
 
     setTimeout(() => {
       const aiResponse = this.generateLogicResponse(text);
-      this.appendAiMessage(aiResponse, true);
+      this.appendAiMessage(aiResponse, "ai", text);
     }, 450);
   }
 
   appendUserMessage(text) {
-    if (!this.chatContainer) return;
-    const msgEl = document.createElement("div");
-    msgEl.className = "copilot-msg copilot-msg--user";
-    msgEl.innerHTML = `
-      <div class="copilot-body">
-        <div class="copilot-text"><p>${this.escapeHtml(text)}</p></div>
-        <div class="copilot-time">${this.getTimeString()}</div>
-      </div>
-    `;
-    this.chatContainer.appendChild(msgEl);
+    const time = this.getTimeString();
+    this.messageHistory.push({ type: "user", text, time });
+    this.renderUserNode(text, time);
     this.scrollToBottom();
   }
 
   appendSystemNotice(text) {
-    if (!this.chatContainer) return;
-    const el = document.createElement("div");
-    el.className = "copilot-system-notice";
-    el.innerHTML = `<span>${text}</span>`;
-    this.chatContainer.appendChild(el);
+    this.messageHistory.push({ type: "notice", text });
+    this.renderNoticeNode(text);
     this.scrollToBottom();
   }
 
-  appendAiMessage(markdownText, animate = false) {
-    if (!this.chatContainer) return;
-    const msgEl = document.createElement("div");
-    msgEl.className = "copilot-msg copilot-msg--ai";
+  appendAiMessage(markdownText, type = "ai", meta = null) {
+    const time = this.getTimeString();
+    this.messageHistory.push({ type, query: meta, data: meta, markdownText, time });
     
-    const formattedHtml = this.formatMarkdown(markdownText);
-    const copyLabel = t("action.copy", "로직 복사");
-    const deployLabel = t("action.deploy_ddc", "🚀 DDC 배포 (BACnet Push)");
-    const feedbackLabel = t("action.feedback", "👍 검증 완료");
-
-    msgEl.innerHTML = `
-      <div class="copilot-avatar">
-        <span class="avatar-icon">HVAC</span>
-      </div>
-      <div class="copilot-body">
-        <div class="copilot-sender">${t("copilot.title")} <span class="badge-tag">Verified SOO</span></div>
-        <div class="copilot-text"></div>
-        <div class="copilot-actions">
-          <button class="copilot-action-btn btn-copy" title="Copy Logic">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><rect x="9" y="9" width="13" height="13" rx="2" stroke="currentColor" stroke-width="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1" stroke="currentColor" stroke-width="2"/></svg>
-            <span>${copyLabel}</span>
-          </button>
-          <button class="copilot-action-btn btn-deploy-ddc" title="Deploy">${deployLabel}</button>
-          <button class="copilot-action-btn btn-feedback" title="Feedback">${feedbackLabel}</button>
-        </div>
-        <div class="copilot-time">${this.getTimeString()}</div>
-      </div>
-    `;
-    this.chatContainer.appendChild(msgEl);
-
-    const textContainer = msgEl.querySelector(".copilot-text");
-    textContainer.innerHTML = formattedHtml;
+    const text = type === "ai" ? this.generateLogicResponse(meta) : (type === "preset" ? this.generatePresetAnalysis(meta) : markdownText);
+    this.renderAiNode(text, time);
     this.scrollToBottom();
     this.isTyping = false;
     this.setSendButtonState(false);
-
-    msgEl.querySelector(".btn-copy")?.addEventListener("click", () => {
-      navigator.clipboard.writeText(markdownText.replace(/[#*`_]/g, ""));
-      const copyBtn = msgEl.querySelector(".btn-copy span");
-      if (copyBtn) copyBtn.textContent = getLanguage() === "ko" ? "✓ 복사 완료" : "✓ Copied";
-      setTimeout(() => {
-        if (copyBtn) copyBtn.textContent = copyLabel;
-      }, 1500);
-    });
-
-    msgEl.querySelector(".btn-deploy-ddc")?.addEventListener("click", () => {
-      const isKo = getLanguage() === "ko";
-      const deployBtn = msgEl.querySelector(".btn-deploy-ddc");
-      deployBtn.innerHTML = `<span class="spinner"></span> ${isKo ? 'DDC 전송 중...' : 'Transmitting...'}`;
-      setTimeout(() => {
-        deployBtn.innerHTML = `✅ ${isKo ? 'DDC 주입 성공 (BACnet Ack)' : 'DDC Injected (BACnet Ack)'}`;
-        this.appendSystemNotice(isKo
-          ? "📡 [BACnet/IP] 대상 제어기 `DDC-AHU-01 (192.168.1.100:47808)`에 신규 제어 시퀀스가 주입되었습니다."
-          : "📡 [BACnet/IP] Control sequence successfully pushed to target controller `DDC-AHU-01 (192.168.1.100:47808)`.");
-      }, 900);
-    });
-
-    msgEl.querySelector(".btn-feedback")?.addEventListener("click", (e) => {
-      e.target.classList.toggle("active");
-      const isKo = getLanguage() === "ko";
-      e.target.textContent = e.target.classList.contains("active") 
-        ? (isKo ? "❤️ 엔지니어 승인됨" : "❤️ Engineer Approved") 
-        : feedbackLabel;
-    });
   }
 
   setSendButtonState(disabled) {
@@ -439,7 +489,8 @@ export class HvacCopilot {
   clearChat() {
     const isKo = getLanguage() === "ko";
     if (confirm(isKo ? "생성된 제어 대화 내용을 모두 초기화하시겠습니까?" : "Clear all chat history?")) {
-      this.renderWelcome();
+      this.messageHistory = [{ type: "welcome", time: this.getTimeString() }];
+      this.renderAllMessages();
     }
   }
 
@@ -532,9 +583,9 @@ Simulated air handling plant telemetry updated.
     }
   }
 
-  generateLogicResponse(query) {
+  generateLogicResponse(query = "") {
     const isKo = getLanguage() === "ko";
-    const q = query.toLowerCase();
+    const q = (query || "").toLowerCase();
 
     // 1. Freeze Protection / Safety
     if (q.includes("동파") || q.includes("한파") || q.includes("프리히터") || q.includes("인터록") || q.includes("안전") || q.includes("freeze") || q.includes("safety") || q.includes("heater")) {
