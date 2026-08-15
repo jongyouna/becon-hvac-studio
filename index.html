@@ -17,12 +17,12 @@
         <div class="brand-badge">H</div>
       </div>
       <nav class="sidebar__nav">
-        <a href="index.html" class="sidebar__item sidebar__item--active" title="계정 로그인">
+        <a href="index.html" class="sidebar__item sidebar__item--active" data-i18n-title="nav.account" title="계정 로그인">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
             <circle cx="12" cy="8" r="4" stroke="#fff" stroke-width="1.6"/>
             <path d="M4 20c0-3.9 3.6-7 8-7s8 3.1 8 7" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/>
           </svg>
-          <span>계정</span>
+          <span data-i18n="nav.account">계정</span>
         </a>
       </nav>
     </aside>
@@ -31,25 +31,36 @@
       <!-- 상단 헤더 -->
       <header class="header">
         <div class="header__logo">
-          <span class="logo-becon">BECON</span>
-          <span class="logo-cloud">HVAC AI Studio</span>
-          <span class="badge-ai-live">DDC Copilot 2.5</span>
+          <span class="logo-becon" data-i18n="brand.name">BECON</span>
+          <span class="logo-cloud" data-i18n="brand.sub">HVAC AI Studio</span>
+          <span class="badge-ai-live" data-i18n="badge.copilot">DDC Copilot 2.5</span>
         </div>
-        <div class="header__lang">
-          <span>Language</span>
-          <button class="lang-select" type="button">
-            한국어
-            <svg width="10" height="6" viewBox="0 0 10 6" fill="none">
-              <path d="M1 1l4 4 4-4" stroke="#333" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </button>
+        
+        <div class="header__user">
+          <!-- 언어 선택 드롭다운 UI -->
+          <div class="lang-dropdown" id="lang-dropdown">
+            <button class="lang-select-btn" id="lang-select-btn" type="button" aria-label="Language Selector">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.8"/>
+                <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" stroke="currentColor" stroke-width="1.8"/>
+              </svg>
+              <span id="current-lang-label">한국어</span>
+              <svg width="10" height="6" viewBox="0 0 10 6" fill="none">
+                <path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+              </svg>
+            </button>
+            <div class="lang-dropdown-menu" id="lang-dropdown-menu">
+              <button class="lang-option selected" data-lang="ko">🇰🇷 한국어 (Korean)</button>
+              <button class="lang-option" data-lang="en">🇺🇸 English</button>
+            </div>
+          </div>
         </div>
       </header>
 
       <div class="sub-banner">
         <div class="sub-banner__inner">
           <span class="sub-banner__dot"></span>
-          <span>BECON HVAC Logic Agent v2.5 — 자연어 기반 Sequence of Operation(SOO) 및 BACnet DDC 제어 코드 자동 생성</span>
+          <span data-i18n="banner.update_text">BECON HVAC Logic Agent v2.5 — 자연어 기반 Sequence of Operation(SOO) 및 BACnet DDC 제어 코드 자동 생성</span>
         </div>
       </div>
 
@@ -57,34 +68,34 @@
       <main class="content">
         <form class="login-form" id="login-form" novalidate>
           <div class="form-header">
-            <h1 class="form-title">HVAC AI Studio 로그인</h1>
-            <p class="form-subtitle">빌딩 자동제어(BAS) 및 스마트 공조 제어 로직 생성 플랫폼</p>
+            <h1 class="form-title" data-i18n="login.title">HVAC AI Studio 로그인</h1>
+            <p class="form-subtitle" data-i18n="login.subtitle">빌딩 자동제어(BAS) 및 스마트 공조 제어 로직 생성 플랫폼</p>
           </div>
 
           <div class="field">
-            <label for="account">엔지니어 계정 (이메일)</label>
-            <input type="email" id="account" name="account" placeholder="Email (예: engineer@becon-hvac.ai)" autocomplete="off" />
+            <label for="account" data-i18n="login.email_label">엔지니어 계정 (이메일)</label>
+            <input type="email" id="account" name="account" data-i18n-placeholder="login.email_placeholder" placeholder="Email (예: engineer@becon-hvac.ai)" autocomplete="off" />
           </div>
 
           <div class="field">
-            <label for="password">비밀번호</label>
-            <input type="password" id="password" name="password" placeholder="Password" autocomplete="off" />
+            <label for="password" data-i18n="login.password_label">비밀번호</label>
+            <input type="password" id="password" name="password" data-i18n-placeholder="login.password_placeholder" placeholder="Password" autocomplete="off" />
           </div>
 
-          <button type="submit" class="btn btn--primary">로그인</button>
+          <button type="submit" class="btn btn--primary" data-i18n="login.btn_login">로그인</button>
 
           <button type="button" class="btn btn--demo" id="demo-login-btn">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
               <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
-            <span>체험 모드로 바로 시작하기 (HVAC Demo)</span>
+            <span data-i18n="login.btn_demo">체험 모드로 바로 시작하기 (HVAC Demo)</span>
           </button>
 
           <div class="save-account">
             <label class="radio">
               <input type="radio" name="save-account" />
               <span class="radio__dot"></span>
-              <span class="radio__label">계정 정보 저장</span>
+              <span class="radio__label" data-i18n="login.save_account">계정 정보 저장</span>
             </label>
           </div>
 
@@ -95,7 +106,7 @@
               <path fill="#4CAF50" d="M24 44c5.5 0 10.4-1.9 14.3-5.1l-6.6-5.4C29.6 35.4 27 36 24 36c-5.2 0-9.6-3.3-11.3-7.9l-6.5 5C9.5 39.6 16.2 44 24 44z"/>
               <path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.3-2.2 4.2-4.1 5.6l6.6 5.4C41.5 35.9 44 30.4 44 24c0-1.3-.1-2.7-.4-3.5z"/>
             </svg>
-            <span>구글 계정으로 로그인</span>
+            <span data-i18n="login.google_login">구글 계정으로 로그인</span>
           </button>
 
           <button type="button" class="btn btn--outline" id="google-otp">
@@ -103,16 +114,16 @@
               <rect x="5" y="10" width="14" height="10" rx="2" stroke="#222" stroke-width="1.6"/>
               <path d="M8 10V7a4 4 0 018 0v3" stroke="#222" stroke-width="1.6" stroke-linecap="round"/>
             </svg>
-            <span>DDC 2단계 보안 OTP 인증</span>
+            <span data-i18n="login.google_otp">DDC 2단계 보안 OTP 인증</span>
           </button>
 
           <p class="helper-text">
-            엔지니어 계정이 없으신가요?
-            <a href="signup.html" class="link">회원가입</a>
+            <span data-i18n="login.no_account">엔지니어 계정이 없으신가요?</span>
+            <a href="signup.html" class="link" data-i18n="login.link_signup">회원가입</a>
           </p>
           <p class="helper-text">
-            비밀번호를 분실하셨나요?
-            <a href="find-account.html" class="link">비밀번호 찾기</a>
+            <span data-i18n="login.forgot_password">비밀번호를 분실하셨나요?</span>
+            <a href="find-account.html" class="link" data-i18n="login.link_find">비밀번호 찾기</a>
           </p>
         </form>
       </main>
@@ -121,6 +132,7 @@
 
   <div class="toast" id="toast"></div>
 
+  <script type="module" src="js/i18n.js"></script>
   <script type="module" src="js/main.js"></script>
 </body>
 </html>

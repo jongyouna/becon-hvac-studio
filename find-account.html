@@ -13,26 +13,46 @@
   <div class="auth-page">
     <header class="header">
       <div class="header__logo">
-        <span class="logo-becon">BECON</span>
-        <span class="logo-cloud">HVAC AI Studio</span>
+        <span class="logo-becon" data-i18n="brand.name">BECON</span>
+        <span class="logo-cloud" data-i18n="brand.sub">HVAC AI Studio</span>
+      </div>
+
+      <div class="header__user">
+        <!-- 언어 선택 드롭다운 UI -->
+        <div class="lang-dropdown" id="lang-dropdown">
+          <button class="lang-select-btn" id="lang-select-btn" type="button" aria-label="Language Selector">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+              <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.8"/>
+              <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" stroke="currentColor" stroke-width="1.8"/>
+            </svg>
+            <span id="current-lang-label">한국어</span>
+            <svg width="10" height="6" viewBox="0 0 10 6" fill="none">
+              <path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+            </svg>
+          </button>
+          <div class="lang-dropdown-menu" id="lang-dropdown-menu">
+            <button class="lang-option selected" data-lang="ko">🇰🇷 한국어 (Korean)</button>
+            <button class="lang-option" data-lang="en">🇺🇸 English</button>
+          </div>
+        </div>
       </div>
     </header>
 
     <main class="auth-content">
       <form class="auth-form" id="find-form" novalidate>
-        <h1 class="auth-title">비밀번호 찾기</h1>
-        <p class="auth-subtitle">가입 시 등록한 엔지니어 이메일 주소를 입력하시면 비밀번호 재설정 링크를 보내드립니다.</p>
+        <h1 class="auth-title" data-i18n="find.title">비밀번호 찾기</h1>
+        <p class="auth-subtitle" data-i18n="find.subtitle">가입 시 등록한 엔지니어 이메일 주소를 입력하시면 비밀번호 재설정 링크를 보내드립니다.</p>
 
         <div class="field">
-          <label for="account">가입 이메일</label>
-          <input type="email" id="account" name="account" placeholder="engineer@building.com" autocomplete="off" />
+          <label for="account" data-i18n="find.email_label">가입 이메일</label>
+          <input type="email" id="account" name="account" data-i18n-placeholder="find.email_placeholder" placeholder="engineer@building.com" autocomplete="off" />
         </div>
 
-        <button type="submit" class="btn btn--primary">재설정 이메일 전송</button>
+        <button type="submit" class="btn btn--primary" data-i18n="find.btn_submit">재설정 이메일 전송</button>
 
         <p class="helper-text">
-          기억나셨나요?
-          <a href="index.html" class="link">로그인으로 돌아가기</a>
+          <span data-i18n="find.remember">기억나셨나요?</span>
+          <a href="index.html" class="link" data-i18n="find.link_login">로그인으로 돌아가기</a>
         </p>
       </form>
     </main>
@@ -40,6 +60,7 @@
 
   <div class="toast" id="toast"></div>
 
+  <script type="module" src="js/i18n.js"></script>
   <script type="module" src="js/find-account.js"></script>
 </body>
 </html>
